@@ -4,6 +4,10 @@ jobs:
     Image-Build:
         name: Image Buildings
         runs-on: ubuntu-latest
+        env:
+           EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+           EC2_URL: ${{ secrets.EC2_URL }}
+           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
         steps:
             - name: Build and push image
               uses: docker/login-action@v3
@@ -18,42 +22,10 @@ jobs:
                 push: true
                 tags: dinesh4363/id-nodeks:${{ github.sha }}
             - name: Install Docker on EC2 Instancesss
-              uses: appleboy/ssh-action@v1.2.0
+              uses: omarhosny206/setup-ssh-for-ec2@v1.0.0
               with:
-                host: ${{ secrets.EC2_HOST }}
-                username: ${{ secrets.EC2_USER }}
-                key: ${{ secrets.EC2_SSH_KEY }}
-                script: |
-                    # Update and install prerequisites
-                    sudo apt-get update
-                    sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-            
-                    # Add Docker's official GPG key
-                    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-            
-                    # Add Docker's stable repository
-                    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-            
-                    # Install Docker
-                    sudo apt-get update
-                    sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-            
-                    # Verify Docker installation
-                    sudo docker --version
-            
-            - name: Bring Up Docker Service on EC2
-              uses: appleboy/ssh-action@v1.2.0
-              with:
-                host: ${{ secrets.EC2_HOST }}
-                username: ${{ secrets.EC2_USER }}
-                key: ${{ secrets.EC2_SSH_KEY }}
-                script: |
-                    # Pull and run a Docker service (example: nginx)
-                    sudo docker pull nginx:latest
-                    sudo docker run -d -p 80:80 --name nginx-service nginx:latest
-            
-                    # Verify that the container is running
-                    sudo docker ps
-                
-            
-
+                EC2_SSH_PRIVATE_KEY: $EC2_SSH_PRIVATE_KEY
+                EC2_URL: $EC2_URL
+    # then you can run commands/scripts directly on the EC2 instance e.g.:
+            - name: Create a new file on the EC2 instance with "hello-world"
+              run: ssh -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_URL "echo "hello-world" >> new_file.txt"
