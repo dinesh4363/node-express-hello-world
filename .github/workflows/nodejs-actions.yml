@@ -26,6 +26,7 @@ jobs:
             
             - name: Verify connectivity
               run: |
-                ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} touch abc.txt
+                ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ secrets.SSH_HOST }} 
+                touch abc.txt
                 ls -lrth
 
