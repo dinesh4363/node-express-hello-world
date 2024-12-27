@@ -5,9 +5,10 @@ jobs:
         name: Image Buildings
         runs-on: ubuntu-latest
         env:
-           EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-           EC2_URL: ${{ secrets.EC2_URL }}
-           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
+            SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+            SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+            SSH_KEY_PATH: ${{ github.workspace }}/../private.key
+
         steps:
             - name: Build and push image
               uses: docker/login-action@v3
@@ -27,9 +28,3 @@ jobs:
                   echo "$SSH_PRIVATE_KEY" > ../private.key
                   sudo chmod 600 ../private.key
                   echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-              
-                  shell: bash
-                  env:
-                    SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-                    SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-                    SSH_KEY_PATH: ${{ github.workspace }}/../private.key
