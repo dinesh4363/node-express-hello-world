@@ -1,7 +1,5 @@
 name: Nodejs Hello World Action
 on: push
-    
-
 jobs:
     Image-Build:
         name: Image Building
