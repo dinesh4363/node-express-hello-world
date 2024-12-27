@@ -28,3 +28,6 @@ jobs:
                   echo "$SSH_PRIVATE_KEY" > ../private.key
                   sudo chmod 600 ../private.key
                   echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+            
+            - name: Verify connectivity
+              run: ssh -i $SSH_KEY_PATH ubuntu@ec2-18-209-109-235.compute-1.amazonaws.com
