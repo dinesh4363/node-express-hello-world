@@ -17,7 +17,7 @@ jobs:
               with:
                 push: true
                 tags: dinesh4363/id-nodeks:${{ github.sha }}
-            - name: Install Docker on EC2 Instance
+            - name: Install Docker on EC2 Instancesss
               uses: appleboy/ssh-action@v1.2.0
               with:
                 host: ${{ secrets.EC2_HOST }}
