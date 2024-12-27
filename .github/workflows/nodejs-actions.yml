@@ -2,7 +2,7 @@ name: Nodejs Hello World Action
 on: push
 jobs:
     Image-Build:
-        name: Image Building steps
+        name: Image Building
         runs-on: ubuntu-latest
         steps:
             - name: Build and push image
